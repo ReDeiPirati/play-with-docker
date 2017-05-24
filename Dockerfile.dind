@@ -1,4 +1,5 @@
-FROM docker:17.04.0-ce-dind
+ARG VERSION=17.05.0-ce-dind
+FROM docker:${VERSION}
 
 RUN apk add --no-cache git tmux py2-pip apache2-utils vim build-base gettext-dev curl bash-completion bash util-linux jq
 
@@ -27,6 +28,7 @@ RUN rm /sbin/modprobe && echo '#!/bin/true' >/sbin/modprobe && chmod +x /sbin/mo
 # Install a nice vimrc file and prompt (by soulshake)
 COPY ["docker-prompt","/usr/local/bin/"]
 COPY [".vimrc",".profile", ".inputrc", ".gitconfig", "./root/"]
+COPY ["motd", "/etc/motd"]
 COPY ["daemon.json", "/etc/docker/"]
 
 ARG docker_storage_driver=overlay2
